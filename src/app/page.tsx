@@ -66,7 +66,41 @@ export default function Home() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+            <Link href="/dashboard">
+              <div className="p-6 bg-blue-50 border border-blue-200 rounded-lg hover:shadow-lg transition cursor-pointer text-center">
+                <span className="text-4xl mb-2 block">📋</span>
+                <h3 className="text-lg font-semibold text-blue-900 mb-1">Dashboard</h3>
+                <p className="text-sm text-blue-700">Lembretes e resumo</p>
+              </div>
+            </Link>
+
+            <Link href="/schedule">
+              <div className="p-6 bg-purple-50 border border-purple-200 rounded-lg hover:shadow-lg transition cursor-pointer text-center">
+                <span className="text-4xl mb-2 block">📅</span>
+                <h3 className="text-lg font-semibold text-purple-900 mb-1">Agenda</h3>
+                <p className="text-sm text-purple-700">Serviços e consultas</p>
+              </div>
+            </Link>
+
+            <Link href="/finances">
+              <div className="p-6 bg-green-50 border border-green-200 rounded-lg hover:shadow-lg transition cursor-pointer text-center">
+                <span className="text-4xl mb-2 block">💰</span>
+                <h3 className="text-lg font-semibold text-green-900 mb-1">Finanças</h3>
+                <p className="text-sm text-green-700">Receita e despesas</p>
+              </div>
+            </Link>
+
+            <Link href="/emergency">
+              <div className="p-6 bg-red-50 border border-red-200 rounded-lg hover:shadow-lg transition cursor-pointer text-center">
+                <span className="text-4xl mb-2 block">🚨</span>
+                <h3 className="text-lg font-semibold text-red-900 mb-1">Emergência</h3>
+                <p className="text-sm text-red-700">Contatos rápidos</p>
+              </div>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             <Link href="/tutors/new">
               <div className="p-6 bg-blue-50 border border-blue-200 rounded-lg hover:shadow-lg transition cursor-pointer">
                 <h3 className="text-xl font-semibold text-blue-900 mb-2">
