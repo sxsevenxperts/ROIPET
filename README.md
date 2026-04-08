@@ -34,6 +34,21 @@ Sistema completo e profissional para gerenciamento de petshop com registro de pe
 - ✅ Lembretes para vacinações e consultas
 - ✅ Dashboard com status de lembretes (urgente, vencido)
 
+### Contatos de Emergência
+- ✅ Cadastro de contatos de emergência por tipo (veterinário, urgência 24h, tóxico, outro)
+- ✅ Armazenamento de telefone principal, secundário, email e endereço
+- ✅ Indicador de disponibilidade 24 horas
+- ✅ Links diretos para chamadas telefônicas
+
+### Controle Financeiro
+- ✅ Registro de transações (receita e despesa) com categorização
+- ✅ Cálculo automático de balança mensal
+- ✅ Filtro por mês e período
+- ✅ Associação de transações a pets específicos
+- ✅ Agenda de pagamentos com vencimentos e status (pendente, pago, vencido)
+- ✅ Marcação de pagamentos como pagos
+- ✅ Previsão de fluxo de caixa
+
 ## 📱 Páginas Principais
 
 - **`/`** - Home com status do banco de dados
@@ -48,6 +63,11 @@ Sistema completo e profissional para gerenciamento de petshop com registro de pe
 - **`/schedule`** - Agenda unificada de serviços e consultas
 - **`/schedule/service/new`** - Agendar novo serviço
 - **`/schedule/consultation/new`** - Agendar nova consulta
+- **`/emergency`** - Lista de contatos de emergência com links rápidos
+- **`/emergency/new`** - Cadastrar novo contato de emergência
+- **`/finances`** - Painel de controle financeiro (transações e pagamentos)
+- **`/finances/transaction/new`** - Registrar nova transação
+- **`/finances/payment/new`** - Agendar novo pagamento
 
 ## 🛠 Tech Stack
 
