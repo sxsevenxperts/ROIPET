@@ -49,6 +49,25 @@ Sistema completo e profissional para gerenciamento de petshop com registro de pe
 - ✅ Marcação de pagamentos como pagos
 - ✅ Previsão de fluxo de caixa
 
+### Planos de Assinatura 💳
+- ✅ 6 planos de assinatura (Ração, Banho, Tosa, Hidratação, Combo, Complete+)
+- ✅ Preços com desconto de 15-25% comparado a preços normais
+- ✅ Transferência automática de serviços não utilizados para o próximo mês
+- ✅ Agendamento automático de serviços
+- ✅ Preferência de tosador salva
+- ✅ Pausa/retomar/cancelar assinaturas sem penalidade
+- ✅ Histórico de faturamento e próximas renovações
+
+### Cobertura de Saúde 🏥 (Health Insurance Add-on)
+- ✅ Três tiers de planos de saúde (Basic, Premium, Plus)
+- ✅ Cobertura de consultas veterinárias (2-4 por mês conforme plano)
+- ✅ Desconto em medicamentos (20-40% conforme plano)
+- ✅ Cobertura de exames anuais (2-6 por ano)
+- ✅ Opção de cobertura de emergência 24h
+- ✅ Registro automático de sinistros de medicamentos
+- ✅ Cálculo automático de desconto baseado no plano
+- ✅ Dashboard de economia mostrando valor salvo para cliente
+
 ## 📱 Páginas Principais
 
 - **`/`** - Home com status do banco de dados
