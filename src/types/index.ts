@@ -296,3 +296,42 @@ export interface SubscriptionInvoice {
   created_at: string;
   updated_at: string;
 }
+
+export type HealthAddonType = 'basic' | 'premium' | 'plus';
+
+export interface HealthInsuranceAddon {
+  id: string;
+  subscription_id: string;
+  addon_type: HealthAddonType;
+  monthly_price: number;
+  status: SubscriptionStatus;
+  consultations_per_month: number;
+  medication_discount: number;
+  exam_coverage_annual: number;
+  emergency_coverage: boolean;
+  next_billing_date: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface HealthCoveredConsultation {
+  id: string;
+  health_addon_id: string;
+  consultation_id: string;
+  coverage_amount: number;
+  payment_date?: string;
+  status: 'pending' | 'covered' | 'paid';
+  created_at: string;
+}
+
+export interface HealthMedicationClaim {
+  id: string;
+  health_addon_id: string;
+  medication_name: string;
+  amount: number;
+  discount_applied: number;
+  claim_date: string;
+  status: 'approved' | 'pending' | 'rejected';
+  notes?: string;
+  created_at: string;
+}

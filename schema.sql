@@ -238,15 +238,55 @@ CREATE TABLE subscription_plans (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name VARCHAR(100) NOT NULL,
   description TEXT,
-  plan_type VARCHAR(50) NOT NULL, -- ração, banho, tosa, hidratação, combo, complete+
+  plan_type VARCHAR(50) NOT NULL, -- ração, banho, tosa, hidratação, combo, complete+, health
   monthly_price DECIMAL(10, 2) NOT NULL,
-  included_services JSONB, -- {banho: 1, tosa: 1, hidratação: 1, ração: 4}
+  included_services JSONB, -- {banho: 1, tosa: 1, hidratação: 1, ração: 4, consultas: 2, medicamentos_desconto: 30}
   discount_percentage INT DEFAULT 0,
   max_rollover INT DEFAULT 2,
-  features JSONB, -- {auto_booking: true, groomer_preference: true}
+  features JSONB, -- {auto_booking: true, groomer_preference: true, vet_coverage: true}
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Add-ons de Saúde
+CREATE TABLE health_insurance_addons (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  subscription_id UUID NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE,
+  addon_type VARCHAR(50) NOT NULL, -- basic, premium, plus
+  monthly_price DECIMAL(10, 2) NOT NULL,
+  status VARCHAR(50) DEFAULT 'active', -- active, paused, cancelled
+  consultations_per_month INT DEFAULT 0,
+  medication_discount INT DEFAULT 0, -- percentual de desconto
+  exam_coverage_annual INT DEFAULT 0, -- quantidade de exames por ano
+  emergency_coverage BOOLEAN DEFAULT false, -- cobertura de emergência 24h
+  next_billing_date DATE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Consultas Veterinárias Cobertas
+CREATE TABLE health_covered_consultations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  health_addon_id UUID NOT NULL REFERENCES health_insurance_addons(id) ON DELETE CASCADE,
+  consultation_id UUID NOT NULL REFERENCES consultation_appointments(id) ON DELETE CASCADE,
+  coverage_amount DECIMAL(10, 2) NOT NULL,
+  payment_date DATE,
+  status VARCHAR(50) DEFAULT 'pending', -- pending, covered, paid
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Reclamações de Medicamentos Cobertos
+CREATE TABLE health_medication_claims (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  health_addon_id UUID NOT NULL REFERENCES health_insurance_addons(id) ON DELETE CASCADE,
+  medication_name VARCHAR(255) NOT NULL,
+  amount DECIMAL(10, 2) NOT NULL,
+  discount_applied DECIMAL(10, 2) NOT NULL,
+  claim_date DATE NOT NULL,
+  status VARCHAR(50) DEFAULT 'approved', -- approved, pending, rejected
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabela de Assinaturas de Clientes
@@ -316,6 +356,12 @@ CREATE INDEX idx_subscriptions_next_billing ON subscriptions(next_billing_date);
 CREATE INDEX idx_subscription_usage_month ON subscription_usage(month);
 CREATE INDEX idx_subscription_invoices_billing_date ON subscription_invoices(billing_date);
 CREATE INDEX idx_subscription_invoices_status ON subscription_invoices(status);
+CREATE INDEX idx_health_insurance_addons_subscription ON health_insurance_addons(subscription_id);
+CREATE INDEX idx_health_insurance_addons_status ON health_insurance_addons(status);
+CREATE INDEX idx_health_covered_consultations_addon ON health_covered_consultations(health_addon_id);
+CREATE INDEX idx_health_covered_consultations_status ON health_covered_consultations(status);
+CREATE INDEX idx_health_medication_claims_addon ON health_medication_claims(health_addon_id);
+CREATE INDEX idx_health_medication_claims_date ON health_medication_claims(claim_date);
 
 -- Row Level Security (RLS)
 ALTER TABLE tutors ENABLE ROW LEVEL SECURITY;
@@ -336,3 +382,6 @@ ALTER TABLE subscription_plans ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subscription_usage ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subscription_invoices ENABLE ROW LEVEL SECURITY;
+ALTER TABLE health_insurance_addons ENABLE ROW LEVEL SECURITY;
+ALTER TABLE health_covered_consultations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE health_medication_claims ENABLE ROW LEVEL SECURITY;

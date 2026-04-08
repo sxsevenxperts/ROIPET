@@ -223,6 +223,21 @@ export default function SubscriptionDetailPage() {
           </div>
         )}
 
+        {/* Cobertura de Saúde */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg shadow-lg p-8 mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">🏥 Cobertura de Saúde</h2>
+              <p className="text-gray-600">
+                Adicione um plano de saúde para cobertura de consultas e medicamentos
+              </p>
+            </div>
+            <Link href={`/subscriptions/${subscription.id}/health`}>
+              <button className="btn-primary">Gerenciar Saúde</button>
+            </Link>
+          </div>
+        </div>
+
         {/* Observações */}
         {subscription.notes && (
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
