@@ -139,3 +139,30 @@ export interface FeedingStats {
   total_feeding_count: number;
   average_daily_amount: number;
 }
+
+export interface ServiceAppointment {
+  id: string;
+  pet_id: string;
+  appointment_date: string;
+  appointment_time: string;
+  service_type: string;
+  groomer_name?: string;
+  notes?: string;
+  status: 'agendado' | 'concluído' | 'cancelado';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ConsultationAppointment {
+  id: string;
+  pet_id: string;
+  veterinarian_id?: string;
+  appointment_date: string;
+  appointment_time: string;
+  reason?: string;
+  notes?: string;
+  status: 'agendado' | 'concluído' | 'cancelado';
+  cost?: number;
+  created_at: string;
+  updated_at: string;
+}

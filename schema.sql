@@ -140,6 +140,43 @@ CREATE INDEX idx_reminders_pet_id ON reminders(pet_id);
 CREATE INDEX idx_reminders_reminder_date ON reminders(reminder_date);
 CREATE INDEX idx_reminders_is_completed ON reminders(is_completed);
 
+-- Tabela de Agendamento de Serviços (Tosa, Banho, etc)
+CREATE TABLE service_appointments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  pet_id UUID NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
+  appointment_date DATE NOT NULL,
+  appointment_time TIME NOT NULL,
+  service_type VARCHAR(100) NOT NULL, -- banho, tosa, unhas, etc
+  groomer_name VARCHAR(255),
+  notes TEXT,
+  status VARCHAR(50) DEFAULT 'agendado', -- agendado, concluído, cancelado
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Agendamento de Consultas Veterinárias
+CREATE TABLE consultation_appointments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  pet_id UUID NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
+  veterinarian_id UUID REFERENCES veterinarians(id),
+  appointment_date DATE NOT NULL,
+  appointment_time TIME NOT NULL,
+  reason VARCHAR(255),
+  notes TEXT,
+  status VARCHAR(50) DEFAULT 'agendado', -- agendado, concluído, cancelado
+  cost DECIMAL(10, 2),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Índices
+CREATE INDEX idx_service_appointments_pet_id ON service_appointments(pet_id);
+CREATE INDEX idx_service_appointments_appointment_date ON service_appointments(appointment_date);
+CREATE INDEX idx_service_appointments_status ON service_appointments(status);
+CREATE INDEX idx_consultation_appointments_pet_id ON consultation_appointments(pet_id);
+CREATE INDEX idx_consultation_appointments_appointment_date ON consultation_appointments(appointment_date);
+CREATE INDEX idx_consultation_appointments_status ON consultation_appointments(status);
+
 -- Row Level Security (RLS)
 ALTER TABLE tutors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pets ENABLE ROW LEVEL SECURITY;
@@ -149,3 +186,5 @@ ALTER TABLE attachments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE grooming_records ENABLE ROW LEVEL SECURITY;
 ALTER TABLE feeding_records ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reminders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE service_appointments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE consultation_appointments ENABLE ROW LEVEL SECURITY;
