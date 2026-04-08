@@ -225,3 +225,74 @@ export interface FinancialStats {
   pending_payments: number;
   overdue_amount: number;
 }
+
+export type PlanType = 'ração' | 'banho' | 'tosa' | 'hidratação' | 'combo' | 'complete+';
+export type SubscriptionStatus = 'active' | 'paused' | 'cancelled' | 'trial';
+export type InvoiceStatus = 'pending' | 'paid' | 'failed' | 'refunded';
+
+export interface SubscriptionPlan {
+  id: string;
+  name: string;
+  description?: string;
+  plan_type: PlanType;
+  monthly_price: number;
+  included_services: {
+    banho?: number;
+    tosa?: number;
+    hidratacao?: number;
+    racao?: number;
+  };
+  discount_percentage: number;
+  max_rollover: number;
+  features: {
+    auto_booking?: boolean;
+    groomer_preference?: boolean;
+  };
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Subscription {
+  id: string;
+  pet_id: string;
+  plan_id: string;
+  status: SubscriptionStatus;
+  subscription_date: string;
+  next_billing_date: string;
+  billing_cycle_day?: number;
+  auto_book_enabled: boolean;
+  groomer_preference?: string;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+  plan?: SubscriptionPlan;
+}
+
+export interface SubscriptionUsage {
+  id: string;
+  subscription_id: string;
+  month: string;
+  banho_used: number;
+  tosa_used: number;
+  hidratacao_used: number;
+  racao_used: number;
+  rollover_banho: number;
+  rollover_tosa: number;
+  rollover_hidratacao: number;
+  rollover_racao: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SubscriptionInvoice {
+  id: string;
+  subscription_id: string;
+  amount: number;
+  billing_date: string;
+  payment_date?: string;
+  status: InvoiceStatus;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}

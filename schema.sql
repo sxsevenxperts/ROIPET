@@ -233,6 +233,69 @@ CREATE TABLE monthly_budget (
   UNIQUE(month, category)
 );
 
+-- Tabela de Planos de Assinatura
+CREATE TABLE subscription_plans (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(100) NOT NULL,
+  description TEXT,
+  plan_type VARCHAR(50) NOT NULL, -- ração, banho, tosa, hidratação, combo, complete+
+  monthly_price DECIMAL(10, 2) NOT NULL,
+  included_services JSONB, -- {banho: 1, tosa: 1, hidratação: 1, ração: 4}
+  discount_percentage INT DEFAULT 0,
+  max_rollover INT DEFAULT 2,
+  features JSONB, -- {auto_booking: true, groomer_preference: true}
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Assinaturas de Clientes
+CREATE TABLE subscriptions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  pet_id UUID NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
+  plan_id UUID NOT NULL REFERENCES subscription_plans(id),
+  status VARCHAR(50) DEFAULT 'active', -- active, paused, cancelled, trial
+  subscription_date DATE NOT NULL,
+  next_billing_date DATE NOT NULL,
+  billing_cycle_day INT, -- 1-30: dia do mês para faturar
+  auto_book_enabled BOOLEAN DEFAULT false,
+  groomer_preference VARCHAR(100),
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Uso Mensal de Assinatura
+CREATE TABLE subscription_usage (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  subscription_id UUID NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE,
+  month DATE NOT NULL, -- YYYY-01-01
+  banho_used INT DEFAULT 0,
+  tosa_used INT DEFAULT 0,
+  hidratacao_used INT DEFAULT 0,
+  racao_used INT DEFAULT 0,
+  rollover_banho INT DEFAULT 0,
+  rollover_tosa INT DEFAULT 0,
+  rollover_hidratacao INT DEFAULT 0,
+  rollover_racao INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(subscription_id, month)
+);
+
+-- Tabela de Faturamento de Assinatura
+CREATE TABLE subscription_invoices (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  subscription_id UUID NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE,
+  amount DECIMAL(10, 2) NOT NULL,
+  billing_date DATE NOT NULL,
+  payment_date DATE,
+  status VARCHAR(50) DEFAULT 'pending', -- pending, paid, failed, refunded
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Índices
 CREATE INDEX idx_emergency_contacts_type ON emergency_contacts(contact_type);
 CREATE INDEX idx_emergency_contacts_active ON emergency_contacts(is_active);
@@ -244,6 +307,15 @@ CREATE INDEX idx_scheduled_payments_due_date ON scheduled_payments(due_date);
 CREATE INDEX idx_scheduled_payments_status ON scheduled_payments(status);
 CREATE INDEX idx_monthly_budget_month ON monthly_budget(month);
 CREATE INDEX idx_monthly_budget_category ON monthly_budget(category);
+CREATE INDEX idx_subscription_plans_type ON subscription_plans(plan_type);
+CREATE INDEX idx_subscription_plans_active ON subscription_plans(is_active);
+CREATE INDEX idx_subscriptions_pet_id ON subscriptions(pet_id);
+CREATE INDEX idx_subscriptions_plan_id ON subscriptions(plan_id);
+CREATE INDEX idx_subscriptions_status ON subscriptions(status);
+CREATE INDEX idx_subscriptions_next_billing ON subscriptions(next_billing_date);
+CREATE INDEX idx_subscription_usage_month ON subscription_usage(month);
+CREATE INDEX idx_subscription_invoices_billing_date ON subscription_invoices(billing_date);
+CREATE INDEX idx_subscription_invoices_status ON subscription_invoices(status);
 
 -- Row Level Security (RLS)
 ALTER TABLE tutors ENABLE ROW LEVEL SECURITY;
@@ -260,3 +332,7 @@ ALTER TABLE emergency_contacts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE financial_transactions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scheduled_payments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE monthly_budget ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subscription_plans ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subscription_usage ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subscription_invoices ENABLE ROW LEVEL SECURITY;

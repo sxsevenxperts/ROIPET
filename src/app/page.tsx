@@ -41,6 +41,9 @@ export default function Home() {
             <Link href="/pets" className="text-blue-600 hover:text-blue-800">
               Pets
             </Link>
+            <Link href="/subscriptions" className="text-blue-600 hover:text-blue-800">
+              Assinaturas
+            </Link>
           </div>
         </div>
       </nav>
@@ -66,7 +69,7 @@ export default function Home() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mt-12">
             <Link href="/dashboard">
               <div className="p-6 bg-blue-50 border border-blue-200 rounded-lg hover:shadow-lg transition cursor-pointer text-center">
                 <span className="text-4xl mb-2 block">📋</span>
@@ -80,6 +83,14 @@ export default function Home() {
                 <span className="text-4xl mb-2 block">📅</span>
                 <h3 className="text-lg font-semibold text-purple-900 mb-1">Agenda</h3>
                 <p className="text-sm text-purple-700">Serviços e consultas</p>
+              </div>
+            </Link>
+
+            <Link href="/subscriptions">
+              <div className="p-6 bg-indigo-50 border border-indigo-200 rounded-lg hover:shadow-lg transition cursor-pointer text-center">
+                <span className="text-4xl mb-2 block">💳</span>
+                <h3 className="text-lg font-semibold text-indigo-900 mb-1">Assinaturas</h3>
+                <p className="text-sm text-indigo-700">Planos e benefícios</p>
               </div>
             </Link>
 
