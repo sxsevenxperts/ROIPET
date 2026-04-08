@@ -166,3 +166,62 @@ export interface ConsultationAppointment {
   created_at: string;
   updated_at: string;
 }
+
+export interface EmergencyContact {
+  id: string;
+  name: string;
+  contact_type: 'veterinário' | 'urgência' | 'tóxico' | 'outro';
+  phone: string;
+  secondary_phone?: string;
+  email?: string;
+  address?: string;
+  description?: string;
+  available_24h: boolean;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FinancialTransaction {
+  id: string;
+  transaction_type: 'receita' | 'despesa';
+  category: string;
+  description?: string;
+  amount: number;
+  transaction_date: string;
+  pet_id?: string;
+  appointment_id?: string;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ScheduledPayment {
+  id: string;
+  description: string;
+  amount: number;
+  due_date: string;
+  payment_date?: string;
+  category?: string;
+  status: 'pendente' | 'pago' | 'vencido' | 'atrasado';
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MonthlyBudget {
+  id: string;
+  month: string;
+  category: string;
+  budgeted_amount?: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FinancialStats {
+  total_revenue: number;
+  total_expenses: number;
+  net_balance: number;
+  pending_payments: number;
+  overdue_amount: number;
+}

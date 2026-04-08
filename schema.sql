@@ -177,6 +177,74 @@ CREATE INDEX idx_consultation_appointments_pet_id ON consultation_appointments(p
 CREATE INDEX idx_consultation_appointments_appointment_date ON consultation_appointments(appointment_date);
 CREATE INDEX idx_consultation_appointments_status ON consultation_appointments(status);
 
+-- Tabela de Números de Emergência
+CREATE TABLE emergency_contacts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(255) NOT NULL,
+  contact_type VARCHAR(100) NOT NULL, -- veterinário, urgência, tóxico, outro
+  phone VARCHAR(20) NOT NULL,
+  secondary_phone VARCHAR(20),
+  email VARCHAR(255),
+  address TEXT,
+  description TEXT,
+  available_24h BOOLEAN DEFAULT FALSE,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Transações Financeiras
+CREATE TABLE financial_transactions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  transaction_type VARCHAR(50) NOT NULL, -- receita, despesa
+  category VARCHAR(100) NOT NULL, -- serviço, ração, medicamento, utilities, outro
+  description VARCHAR(255),
+  amount DECIMAL(10, 2) NOT NULL,
+  transaction_date DATE NOT NULL,
+  pet_id UUID REFERENCES pets(id) ON DELETE SET NULL,
+  appointment_id UUID, -- referência para agendamento completo
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Pagamentos Agendados
+CREATE TABLE scheduled_payments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  description VARCHAR(255) NOT NULL,
+  amount DECIMAL(10, 2) NOT NULL,
+  due_date DATE NOT NULL,
+  payment_date DATE,
+  category VARCHAR(100), -- fornecedor, aluguel, utilities, etc
+  status VARCHAR(50) DEFAULT 'pendente', -- pendente, pago, vencido, atrasado
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Orçamento Mensal
+CREATE TABLE monthly_budget (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  month DATE NOT NULL, -- primeiro dia do mês
+  category VARCHAR(100) NOT NULL,
+  budgeted_amount DECIMAL(10, 2),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(month, category)
+);
+
+-- Índices
+CREATE INDEX idx_emergency_contacts_type ON emergency_contacts(contact_type);
+CREATE INDEX idx_emergency_contacts_active ON emergency_contacts(is_active);
+CREATE INDEX idx_financial_transactions_date ON financial_transactions(transaction_date);
+CREATE INDEX idx_financial_transactions_type ON financial_transactions(transaction_type);
+CREATE INDEX idx_financial_transactions_category ON financial_transactions(category);
+CREATE INDEX idx_financial_transactions_pet_id ON financial_transactions(pet_id);
+CREATE INDEX idx_scheduled_payments_due_date ON scheduled_payments(due_date);
+CREATE INDEX idx_scheduled_payments_status ON scheduled_payments(status);
+CREATE INDEX idx_monthly_budget_month ON monthly_budget(month);
+CREATE INDEX idx_monthly_budget_category ON monthly_budget(category);
+
 -- Row Level Security (RLS)
 ALTER TABLE tutors ENABLE ROW LEVEL SECURITY;
 ALTER TABLE pets ENABLE ROW LEVEL SECURITY;
@@ -188,3 +256,7 @@ ALTER TABLE feeding_records ENABLE ROW LEVEL SECURITY;
 ALTER TABLE reminders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE service_appointments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE consultation_appointments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE emergency_contacts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE financial_transactions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE scheduled_payments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE monthly_budget ENABLE ROW LEVEL SECURITY;
