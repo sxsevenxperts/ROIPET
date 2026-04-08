@@ -1,25 +1,63 @@
 # ROIPET - Sistema de Gerenciamento de Petshop
 
-Sistema completo para gerenciamento de petshop com registro de pets, cartão vacinal e prontuário médico.
+Sistema completo e profissional para gerenciamento de petshop com registro de pets, cartão vacinal, prontuário médico, agenda de serviços e consultas.
 
 ## 🚀 Features
 
-- ✅ Cadastro de tutores (donos)
-- ✅ Cadastro de pets (cão, gato, ave, etc)
-- ✅ Cartão vacinal digital
-- ✅ Prontuário médico completo
-- ✅ Histórico de consultas e tratamentos
-- ✅ Anexos (exames, documentos)
-- ✅ Gestão de veterinários
+### Gerenciamento Básico
+- ✅ Cadastro de tutores (donos) com contatos e endereços
+- ✅ Cadastro de pets (cão, gato, ave, roedor, réptil)
+- ✅ Perfis detalhados com foto, raça, peso, tamanho, cor, microchip
+
+### Saúde & Vacinação
+- ✅ Cartão vacinal digital com datas e próximas doses
+- ✅ Prontuário médico completo com histórico
+- ✅ Gestão de consultas e diagnósticos
+- ✅ Registro de medicamentos com dosagem
+- ✅ Anexos de exames e documentos
+
+### Serviços & Agendamentos
+- ✅ Registro de tosa com tosador e observações
+- ✅ Cálculo automático da média entre tosas
+- ✅ Agenda de serviços com horários
+- ✅ Agenda de consultas veterinárias com veterinários
+
+### Alimentação
+- ✅ Registro de ração com marca e tipo
+- ✅ Cálculo de consumo diário médio
+- ✅ Previsão automática de próximas compras
+- ✅ Histórico de custos
+
+### Lembretes & Notificações
+- ✅ Geração automática de lembretes para tosa
+- ✅ Lembretes para compra de ração
+- ✅ Lembretes para vacinações e consultas
+- ✅ Dashboard com status de lembretes (urgente, vencido)
+
+## 📱 Páginas Principais
+
+- **`/`** - Home com status do banco de dados
+- **`/dashboard`** - Dashboard central com todos os lembretes
+- **`/tutors`** - Lista de tutores com CRUD completo
+- **`/tutors/new`** - Criar novo tutor
+- **`/pets`** - Lista de pets com filtros
+- **`/pets/new`** - Criar novo pet
+- **`/pets/[id]`** - Detalhes do pet com abas: Visão Geral, Tosa, Ração, Lembretes
+- **`/pets/[id]/grooming/new`** - Registrar nova tosa
+- **`/pets/[id]/feeding/new`** - Registrar nova ração
+- **`/schedule`** - Agenda unificada de serviços e consultas
+- **`/schedule/service/new`** - Agendar novo serviço
+- **`/schedule/consultation/new`** - Agendar nova consulta
 
 ## 🛠 Tech Stack
 
 - **Frontend**: Next.js 14 + React 18 + TypeScript
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS + Lucide Icons
 - **Backend**: Next.js API Routes
 - **Database**: Supabase (PostgreSQL)
 - **Storage**: Supabase Storage
-- **Auth**: Supabase Auth (em desenvolvimento)
+- **State Management**: Zustand (pronto para usar)
+- **Date Handling**: date-fns
 
 ## 📋 Estrutura do Projeto
 
