@@ -84,3 +84,58 @@ export interface Attachment {
   file_type: 'exam' | 'document' | 'photo';
   created_at: string;
 }
+
+export interface GroomingRecord {
+  id: string;
+  pet_id: string;
+  grooming_date: string;
+  groomer_name?: string;
+  service_type?: string; // banho, tosa, unhas, etc
+  notes?: string;
+  next_grooming_date?: string;
+  cost?: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FeedingRecord {
+  id: string;
+  pet_id: string;
+  feed_date: string;
+  feed_brand: string;
+  feed_type?: string; // ração seca, úmida, natural, etc
+  quantity?: number; // kg
+  daily_amount?: number; // gramas
+  cost?: number;
+  notes?: string;
+  next_purchase_date?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Reminder {
+  id: string;
+  pet_id: string;
+  reminder_type: 'vaccination' | 'grooming' | 'feeding' | 'medical';
+  reminder_date: string;
+  title: string;
+  description?: string;
+  is_completed: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GroomingStats {
+  average_days_between: number;
+  last_grooming_date?: string;
+  next_scheduled_date?: string;
+  total_grooming_count: number;
+}
+
+export interface FeedingStats {
+  average_days_between: number;
+  last_feeding_date?: string;
+  next_purchase_date?: string;
+  total_feeding_count: number;
+  average_daily_amount: number;
+}
